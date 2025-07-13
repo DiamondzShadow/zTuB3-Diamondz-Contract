@@ -1,4 +1,3 @@
-Here’s a skeleton **README.md** you can drop into the root of your repo. Just replace placeholders (in `<>`) with your real values:
 
 ````markdown
 # zsT3Token (zsLabTuB3)
