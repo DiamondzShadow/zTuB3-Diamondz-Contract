@@ -1,0 +1,11 @@
+[profile.default]
+src = "src"
+out = "out"
+libs = ["lib"]
+solc = "0.8.19"
+optimizer = true
+optimizer_runs = 10000
+
+[dependencies]
+"@chainlink/contracts-ccip" = "1.5.0"
+"@openzeppelin/contracts" = "4.9.3"
