@@ -18,7 +18,7 @@ import {IERC677Receiver} from "../interfaces/IERC677Receiver.sol";
  * Key features:
  * - ERC677 transferAndCall functionality
  * - Burn and mint capabilities with role-based access control
- * - 5 billion token initial supply
+ * - 4 billion token initial supply with 5 billion max supply cap
  * - Compatible with Chainlink's Cross-Chain Token (CCT) system
  */
 contract BurnMintERC677 is ERC20, ERC20Burnable, IERC677, IERC165, Ownable {
@@ -60,10 +60,10 @@ contract BurnMintERC677 is ERC20, ERC20Burnable, IERC677, IERC165, Ownable {
     ) ERC20(name_, symbol_) {
         if (initialAccount == address(0)) revert InvalidRecipient(initialAccount);
         
-        // Set max supply to initial supply (can be increased later by owner)
-        s_maxSupply = INITIAL_SUPPLY;
+        // Set max supply to 5 billion tokens
+        s_maxSupply = MAX_SUPPLY;
         
-        // Mint initial supply
+        // Mint initial supply of 4 billion tokens
         _mint(initialAccount, INITIAL_SUPPLY);
         
         // Grant the deployer minter and burner roles initially

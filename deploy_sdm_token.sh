@@ -7,7 +7,7 @@ export TOKEN_SYMBOL="SDM"
 # IMPORTANT: Replace these with your actual values
 export INITIAL_ACCOUNT="0x_YOUR_WALLET_ADDRESS_HERE"
 export PRIVATE_KEY="0x_YOUR_PRIVATE_KEY_HERE"
-export RPC_URL="https://eth-sepolia.g.alchemy.com/v2/YOUR-API-KEY"  # or your preferred network
+export RPC_URL="https://hardworking-greatest-road.diamondz-zslab.quiknode.pro/"
 
 # Optional: For contract verification on Etherscan
 # export ETHERSCAN_API_KEY="YOUR-ETHERSCAN-API-KEY"
