@@ -190,6 +190,9 @@ PRIVATE_KEY="0xYourPrivateKeyHere"
 TOKEN_NAME="YourTokenName"
 TOKEN_SYMBOL="YTN"
 INITIAL_ACCOUNT="0xAddressThatReceivesInitialSupply"
+
+# Deployed token address (fill in after deployment)
+#TOKEN_ADDRESS="0x..."
 ```
 
 Load it:
@@ -298,15 +301,10 @@ cast send $TOKEN_ADDRESS "transfer(address,uint256)" $RECIPIENT_ADDRESS 10000000
   --rpc-url $RPC_URL \
   --private-key $PRIVATE_KEY
 
-# Add minter (owner only)
-cast send $TOKEN_ADDRESS "grantMintRole(address)" $MINTER_ADDRESS \
-  --rpc-url $RPC_URL \
-  --private-key $PRIVATE_KEY
-
-# Mint tokens (minter only)
+# Mint tokens (owner has minter role by default)
 cast send $TOKEN_ADDRESS "mint(address,uint256)" $RECIPIENT_ADDRESS 1000000000000000000 \
   --rpc-url $RPC_URL \
-  --private-key $MINTER_PRIVATE_KEY
+  --private-key $PRIVATE_KEY
 ```
 
 ### Web3.js
