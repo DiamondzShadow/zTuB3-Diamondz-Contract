@@ -41,8 +41,11 @@ contract BurnMintERC677 is ERC20, ERC20Burnable, IERC677, IERC165, Ownable {
     // Maximum supply cap (can be adjusted by owner)
     uint256 private s_maxSupply;
 
-    // Initial supply: 5 billion tokens with 18 decimals
-    uint256 public constant INITIAL_SUPPLY = 5_000_000_000 * 10**18;
+    // Initial supply: 4 billion tokens with 18 decimals
+    uint256 public constant INITIAL_SUPPLY = 4_000_000_000 * 10**18;
+    
+    // Maximum supply: 5 billion tokens with 18 decimals
+    uint256 public constant MAX_SUPPLY = 5_000_000_000 * 10**18;
 
     /**
      * @dev Constructor initializes the token with name, symbol, and initial supply
