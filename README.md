@@ -1,7 +1,7 @@
 ````markdown
-# zsT3Token (zsLabTuB3)
+# BurnMintERC677 Token
 
-> An upgradeable, Pausable, oracle-driven ERC-20 token with governance, gasless permits, voting, and burn mechanics—ideal for media/tokenized content ecosystems.
+> An ERC677 token with burn and mint capabilities, designed for cross-chain compatibility with Chainlink CCIP and enhanced gamification features.
 
 ## Table of Contents
 
@@ -9,18 +9,19 @@
 - [Features](#features)  
 - [Prerequisites](#prerequisites)  
 - [Getting Started](#getting-started)  
-  - [Clone & Install](#clone----install)  
+  - [Clone & Install](#clone--install)  
   - [Configure Environment](#configure-environment)  
-  - [Compile & Test](#compile----test)  
+  - [Compile & Test](#compile--test)  
 - [Deployment](#deployment)  
   - [Dry Run](#dry-run)  
   - [Live Deploy](#live-deploy)  
-  - [Verify & ABI](#verify----abi)  
+  - [Verify & ABI](#verify--abi)  
 - [Usage Examples](#usage-examples)  
   - [Ethers.js](#ethersjs)  
   - [CLI](#cli)  
-  - [SDK](#sdk)  
-- [Upgrading](#upgrading)  
+  - [Web3.js](#web3js)  
+- [Gamification Features](#gamification-features)
+- [CCIP Integration](#ccip-integration)
 - [Contributing](#contributing)  
 - [License](#license)
 
@@ -28,27 +29,26 @@
 
 ## Overview
 
-`zsT3Token` is an ERC-20 token running behind a UUPS proxy. It’s designed for on-chain media ecosystems where:
+`BurnMintERC677` is an ERC20 token with ERC677 extension that's optimized for:
 
-- **Oracle-driven minting** (e.g. mint on video views).  
-- **Automatic burn** above a max supply and **safeguarded minimum supply**.  
-- **On-chain governance** via ERC-20 Votes.  
-- **Gasless approvals** with Permit.  
-- **Pausable** for emergency halts.  
-- **Transfer-and-call** patterns (ERC-1363) for pay-per-view or tip flows.  
+- **Cross-chain transfers** via Chainlink CCIP  
+- **Role-based minting and burning** for flexible supply management  
+- **Gamification features** with milestone tracking and rich event emissions  
+- **Analytics-ready** with comprehensive event data for platforms like Artemis  
+- **4 billion initial supply** with a 5 billion max supply cap  
 
 ---
 
 ## Features
 
-- ✅ Upgradeable (UUPS)  
-- 🔥 Burnable & automatic supply control  
-- ⏸️ Emergency pause/unpause  
-- 📜 Gasless approvals (ERC-2612 Permit)  
-- 📊 On-chain voting (ERC-20 Votes)  
-- 🎬 Oracle-triggered minting with metadata events  
-- 🛡️ Minimum supply guardrail  
-- 🏦 Treasury administration  
+- ✅ ERC677 transferAndCall functionality  
+- 🔥 Burnable with role-based access control  
+- 🪙 Mintable with max supply protection  
+- 🎮 Built-in gamification with milestone tracking  
+- 🌉 CCIP-ready for cross-chain transfers  
+- 📊 Rich event emissions for analytics  
+- 🏦 Owner-controlled role management  
+- 🛡️ Maximum supply guardrail (5B tokens)  
 
 ---
 
@@ -172,20 +172,24 @@ Verify installation with `node --version` and `npm --version`.
 ```bash
 git clone git@github.com:DiamondzShadow/zTuB3-Diamondz-Contract.git
 cd zTuB3-Diamondz-Contract
-forge init .          # if you haven’t already
-forge install OpenZeppelin/openzeppelin-contracts-upgradeable
 forge install OpenZeppelin/openzeppelin-contracts
-````
+```
 
 ### Configure Environment
 
 Create a local `.env` (never committed):
 
 ```ini
-RPC_URL="https://hardworking-greatest-road.diamondz-zslab.quiknode.pro/"
-PRIVATE_KEY="0xyourPrivateKeyHere"
-ORACLE="0xOracleAddress"
-TREASURY="0xTreasuryAddress"
+# Network RPC URL
+RPC_URL="https://your-rpc-url-here"
+
+# Deployment private key
+PRIVATE_KEY="0xYourPrivateKeyHere"
+
+# Token configuration
+TOKEN_NAME="YourTokenName"
+TOKEN_SYMBOL="YTN"
+INITIAL_ACCOUNT="0xAddressThatReceivesInitialSupply"
 ```
 
 Load it:
@@ -199,7 +203,6 @@ source .env
 ```bash
 forge clean
 forge build
-# (optional) run any tests you have
 forge test
 ```
 
@@ -210,36 +213,39 @@ forge test
 ### Dry Run
 
 ```bash
-forge script script/DeployT3Token.s.sol:DeployT3Token \
+forge script script/DeployBurnMintERC677.s.sol:DeployBurnMintERC677 \
   --rpc-url $RPC_URL \
   --private-key $PRIVATE_KEY
 ```
 
-– This simulates gas costs without sending transactions.
+This simulates gas costs without sending transactions.
 
 ### Live Deploy
 
 ```bash
-forge script script/DeployT3Token.s.sol:DeployT3Token \
+forge script script/DeployBurnMintERC677.s.sol:DeployBurnMintERC677 \
   --rpc-url $RPC_URL \
   --private-key $PRIVATE_KEY \
   --broadcast
 ```
 
-You’ll see two TX hashes and the **proxy address** in the logs.
+The deployment will output the token contract address.
 
 ### Verify & ABI
 
 ```bash
-export PROXY=<YourProxyAddress>
-cast call $PROXY "name()(string)"   --rpc-url $RPC_URL   # expect "zsLabTuB3"
-cast call $PROXY "symbol()(string)" --rpc-url $RPC_URL   # expect "zsT3"
+export TOKEN_ADDRESS=<YourTokenAddress>
+
+# Verify basic functionality
+cast call $TOKEN_ADDRESS "name()(string)" --rpc-url $RPC_URL
+cast call $TOKEN_ADDRESS "symbol()(string)" --rpc-url $RPC_URL
+cast call $TOKEN_ADDRESS "totalSupply()(uint256)" --rpc-url $RPC_URL
 
 # Extract ABI for frontend/SDK
-forge inspect src/zsT3Token.sol:zsT3Token abi > abi.json
+forge inspect src/tokens/BurnMintERC677.sol:BurnMintERC677 abi > abi.json
 
 git add abi.json
-git commit -m "Add zsT3Token ABI post-deploy"
+git commit -m "Add BurnMintERC677 ABI post-deploy"
 git push
 ```
 
@@ -249,63 +255,138 @@ git push
 
 ### Ethers.js
 
-```ts
+```javascript
 import { ethers } from "ethers";
 import abi from "./abi.json";
 
 const provider = new ethers.providers.JsonRpcProvider(process.env.RPC_URL);
-const contract = new ethers.Contract(process.env.PROXY, abi, provider);
+const signer = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
+const contract = new ethers.Contract(process.env.TOKEN_ADDRESS, abi, signer);
 
 async function main() {
-  console.log(await contract.name());
-  console.log(await contract.totalSupply());
+  // Read token info
+  console.log("Name:", await contract.name());
+  console.log("Symbol:", await contract.symbol());
+  console.log("Total Supply:", ethers.utils.formatEther(await contract.totalSupply()));
+  
+  // Transfer with callback (ERC677)
+  const recipient = "0xRecipientAddress";
+  const amount = ethers.utils.parseEther("100");
+  const data = ethers.utils.defaultAbiCoder.encode(["string"], ["Hello"]);
+  
+  const tx = await contract.transferAndCall(recipient, amount, data);
+  await tx.wait();
+  
+  // Check gamification data
+  const totalMinted = await contract.totalMintedTo(recipient);
+  console.log("Total minted to recipient:", ethers.utils.formatEther(totalMinted));
 }
-main();
+
+main().catch(console.error);
 ```
 
 ### CLI
 
-Install the CLI (if you published or linked it):
+Using cast (Foundry):
 
 ```bash
-npm install -g zstb-cli
-zstb name
-zstb totalSupply
-zstb mint --to 0xUser --amount 1000
-zstb burn --amount 500
+# Check token balance
+cast call $TOKEN_ADDRESS "balanceOf(address)(uint256)" $YOUR_ADDRESS --rpc-url $RPC_URL
+
+# Transfer tokens
+cast send $TOKEN_ADDRESS "transfer(address,uint256)" $RECIPIENT_ADDRESS 1000000000000000000 \
+  --rpc-url $RPC_URL \
+  --private-key $PRIVATE_KEY
+
+# Add minter (owner only)
+cast send $TOKEN_ADDRESS "grantMintRole(address)" $MINTER_ADDRESS \
+  --rpc-url $RPC_URL \
+  --private-key $PRIVATE_KEY
+
+# Mint tokens (minter only)
+cast send $TOKEN_ADDRESS "mint(address,uint256)" $RECIPIENT_ADDRESS 1000000000000000000 \
+  --rpc-url $RPC_URL \
+  --private-key $MINTER_PRIVATE_KEY
 ```
 
-### SDK
+### Web3.js
 
-```ts
-import { ZsTB } from "zstb-sdk";
-const sdk = new ZsTB(RPC_URL, PRIVATE_KEY, PROXY);
+```javascript
+const Web3 = require('web3');
+const abi = require('./abi.json');
 
-await sdk.mint("0xUser", "1000");
-await sdk.burn("500");
+const web3 = new Web3(process.env.RPC_URL);
+const account = web3.eth.accounts.privateKeyToAccount(process.env.PRIVATE_KEY);
+web3.eth.accounts.wallet.add(account);
+
+const contract = new web3.eth.Contract(abi, process.env.TOKEN_ADDRESS);
+
+async function monitorEvents() {
+  // Listen for milestone events
+  contract.events.MintMilestone({
+    fromBlock: 'latest'
+  })
+  .on('data', (event) => {
+    console.log('Milestone reached!', {
+      recipient: event.returnValues.recipient,
+      totalMinted: web3.utils.fromWei(event.returnValues.totalMinted),
+      milestone: event.returnValues.milestoneReached
+    });
+  });
+
+  // Listen for cross-chain mints
+  contract.events.CrossChainMint({
+    fromBlock: 'latest'
+  })
+  .on('data', (event) => {
+    console.log('Cross-chain mint detected!', {
+      recipient: event.returnValues.recipient,
+      amount: web3.utils.fromWei(event.returnValues.amount),
+      sourceChain: event.returnValues.sourceChain
+    });
+  });
+}
+
+monitorEvents().catch(console.error);
 ```
 
 ---
 
-## Upgrading
+## Gamification Features
 
-1. Update your logic in `src/zsT3Token.sol`.
-2. Bump the version/tag of your OZ submodules (if used).
-3. Write a new upgrade script calling `upgradeTo(newImpl)` on your proxy.
-4. Broadcast and verify.
+The token includes built-in gamification features:
+
+- **Milestone Tracking**: Automatic detection when addresses reach 100M token milestones
+- **Mint Tracking**: Total minted amount per address tracked on-chain
+- **Rich Events**: Comprehensive event data for analytics and achievements
+- **Cross-chain Attribution**: Track mints from different chains via CCIP
+
+See [GAMIFICATION_FEATURES.md](GAMIFICATION_FEATURES.md) for detailed documentation.
+
+---
+
+## CCIP Integration
+
+The token is fully compatible with Chainlink CCIP for cross-chain transfers:
+
+- Implements burn/mint mechanism for cross-chain transfers
+- Enhanced minting function with CCIP metadata tracking
+- Compatible with Chainlink's Cross-Chain Token (CCT) system
+
+See [CCIP_INTEGRATION.md](CCIP_INTEGRATION.md) for integration guide.
 
 ---
 
 ## Contributing
 
 1. Fork the repo
-2. Create your feature branch (`git checkout -b feature/foo`)
-3. Commit your changes (`git commit -am "Add foo"`)
-4. Push (`git push origin feature/foo`)
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m "Add amazing feature"`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
 ---
 
 ## License
 
-This project is licensed under the [Apache License 2.0](LICENSE).
+This project is licensed under the [MIT License](LICENSE).
