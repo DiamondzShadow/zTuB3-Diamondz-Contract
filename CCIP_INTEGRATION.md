@@ -9,7 +9,8 @@ The BurnMintERC677 token is designed to be fully compatible with Chainlink CCIP 
 - **ERC677** - Standard ERC20 with `transferAndCall` functionality
 - **Burn/Mint mechanism** - Required for CCIP cross-chain transfers
 - **Role-based access control** - For managing minters and burners
-- **5 billion token supply** - Initial supply with configurable max supply
+- **4 billion token initial supply** - With configurable max supply (5 billion default)
+- **Gamification events** - Enhanced tracking for cross-chain mints
 
 ## Key Features for CCIP
 
@@ -26,6 +27,10 @@ The BurnMintERC677 token is designed to be fully compatible with Chainlink CCIP 
 
 ### 3. ERC677 TransferAndCall
 - `transferAndCall(address to, uint256 amount, bytes data)` - Transfers tokens and calls receiver
+
+### 4. Enhanced Cross-Chain Tracking
+- `mintWithCCIPData(address account, uint256 amount, string sourceChain, bytes32 ccipMessageId)` - Special mint function for CCIP with metadata
+- Emits `CrossChainMint` event for better cross-chain visibility
 
 ## CCIP Registration Steps
 
@@ -73,6 +78,61 @@ The CCIP system will create token pools that handle the burn/mint operations:
 - **Source Chain Pool**: Burns tokens when sending cross-chain
 - **Destination Chain Pool**: Mints tokens when receiving cross-chain
 
+## Using Gamification Features with CCIP
+
+### Track Cross-Chain Mints
+
+When CCIP mints tokens on the destination chain, you can use the enhanced mint function:
+
+```solidity
+// In your CCIP integration contract
+function handleCCIPMint(
+    address recipient,
+    uint256 amount,
+    string memory sourceChain,
+    bytes32 messageId
+) external onlyCCIPPool {
+    // Use the enhanced mint function
+    token.mintWithCCIPData(recipient, amount, sourceChain, messageId);
+}
+```
+
+### Monitor Cross-Chain Activity
+
+```javascript
+// Listen for cross-chain mints
+token.on("CrossChainMint", (recipient, amount, sourceChain, messageId) => {
+    console.log(`Cross-chain mint from ${sourceChain}: ${amount} tokens`);
+    
+    // Update cross-chain analytics
+    updateCrossChainStats(sourceChain, amount);
+    
+    // Track CCIP message
+    trackCCIPMessage(messageId);
+});
+
+// Monitor all mints including cross-chain
+token.on("TokensMinted", (minter, recipient, amount, totalSupply, timestamp) => {
+    if (minter === CCIP_POOL_ADDRESS) {
+        console.log("CCIP mint detected");
+    }
+});
+```
+
+### Analytics for Cross-Chain Flows
+
+```sql
+-- Query cross-chain mint volumes by source chain
+SELECT 
+    sourceChain,
+    COUNT(*) as transfer_count,
+    SUM(amount) as total_volume
+FROM cross_chain_mint_events
+WHERE timestamp > NOW() - INTERVAL '7 days'
+GROUP BY sourceChain
+ORDER BY total_volume DESC;
+```
+
 ## Testing the Integration
 
 Run the test suite to ensure your token works correctly:
@@ -94,6 +154,7 @@ forge test --gas-report
 2. **Max Supply**: Set an appropriate max supply to prevent unlimited minting
 3. **Access Control**: The owner account has significant privileges - use a multisig
 4. **CCIP Pool Addresses**: Verify the official CCIP pool addresses before granting roles
+5. **Event Monitoring**: Set up alerts for unusual cross-chain mint patterns
 
 ## Example Integration Script
 
