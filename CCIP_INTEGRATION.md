@@ -98,8 +98,8 @@ forge test --gas-report
 ## Example Integration Script
 
 ```solidity
-// Example script to set up CCIP roles
-contract SetupCCIPRoles is Script {
+// Example script to set up CCIP roles on DESTINATION chain
+contract SetupCCIPRolesDestination is Script {
     function run() external {
         address tokenAddress = 0x...; // Your deployed token
         address ccipPoolAddress = 0x...; // Official CCIP pool
@@ -109,8 +109,25 @@ contract SetupCCIPRoles is Script {
         
         BurnMintERC677 token = BurnMintERC677(tokenAddress);
         
-        // Grant roles to CCIP pool
+        // On destination chain - grant ONLY mint role
         token.grantMintRole(ccipPoolAddress);
+        
+        vm.stopBroadcast();
+    }
+}
+
+// Example script to set up CCIP roles on SOURCE chain
+contract SetupCCIPRolesSource is Script {
+    function run() external {
+        address tokenAddress = 0x...; // Your deployed token
+        address ccipPoolAddress = 0x...; // Official CCIP pool
+        
+        uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
+        vm.startBroadcast(deployerPrivateKey);
+        
+        BurnMintERC677 token = BurnMintERC677(tokenAddress);
+        
+        // On source chain - grant ONLY burn role
         token.grantBurnRole(ccipPoolAddress);
         
         vm.stopBroadcast();
