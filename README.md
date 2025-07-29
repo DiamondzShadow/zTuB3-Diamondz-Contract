@@ -54,10 +54,35 @@
 
 ## Prerequisites
 
-- [Rust & Cargo](https://rustup.rs/)  
-- [Foundry (forge & cast)](https://github.com/foundry-rs/foundry)  
-- [Git](https://git-scm.com/)  
-- Node.js + npm (for SDK/CLI or frontend)  
+### 1. Rust & Cargo
+Install Rust and Cargo by running:
+```bash
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+```
+Follow the on-screen instructions and restart your terminal after installation.
+
+### 2. Foundry (forge & cast)
+Install Foundry by running:
+```bash
+curl -L https://foundry.paradigm.xyz | bash
+foundryup
+```
+This will install forge, cast, anvil, and chisel.
+
+### 3. Git
+Install Git using your system's package manager:
+- **Ubuntu/Debian**: `sudo apt-get install git`
+- **macOS**: `brew install git` (requires Homebrew)
+- **Windows**: Download installer from https://git-scm.com/download/win
+
+### 4. Node.js + npm
+Install Node.js and npm:
+- **Using Node Version Manager (recommended)**:
+  ```bash
+  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
+  nvm install --lts
+  ```
+- **Direct download**: Visit https://nodejs.org/ and download the LTS version for your OS  
 
 ---
 
