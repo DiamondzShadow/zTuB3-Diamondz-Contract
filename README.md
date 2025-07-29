@@ -55,34 +55,113 @@
 ## Prerequisites
 
 ### 1. Rust & Cargo
-Install Rust and Cargo by running:
+
+**Linux/macOS:**
 ```bash
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 ```
-Follow the on-screen instructions and restart your terminal after installation.
+
+**Windows PowerShell:**
+```powershell
+irm https://win.rustup.rs/x86_64 -OutFile rustup-init.exe
+.\rustup-init.exe -y
+Remove-Item .\rustup-init.exe
+```
+
+After installation, restart your terminal and verify with `rustc --version`.
 
 ### 2. Foundry (forge & cast)
-Install Foundry by running:
+
+**Linux/macOS:**
 ```bash
 curl -L https://foundry.paradigm.xyz | bash
 foundryup
 ```
-This will install forge, cast, anvil, and chisel.
+
+**Windows PowerShell:**
+```powershell
+# Install WSL2 first if not already installed
+wsl --install
+
+# Then run inside WSL2
+curl -L https://foundry.paradigm.xyz | bash
+foundryup
+```
+
+This will install forge, cast, anvil, and chisel. Verify with `forge --version`.
 
 ### 3. Git
-Install Git using your system's package manager:
-- **Ubuntu/Debian**: `sudo apt-get install git`
-- **macOS**: `brew install git` (requires Homebrew)
-- **Windows**: Download installer from https://git-scm.com/download/win
+
+**Linux (Ubuntu/Debian):**
+```bash
+sudo apt-get update
+sudo apt-get install git
+```
+
+**Linux (Fedora/RHEL):**
+```bash
+sudo dnf install git
+```
+
+**macOS:**
+```bash
+# Install Homebrew first if not installed
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+# Then install Git
+brew install git
+```
+
+**Windows PowerShell:**
+```powershell
+# Using winget (Windows Package Manager)
+winget install --id Git.Git -e --source winget
+
+# Or using Chocolatey if installed
+choco install git -y
+```
+
+Verify installation with `git --version`.
 
 ### 4. Node.js + npm
-Install Node.js and npm:
-- **Using Node Version Manager (recommended)**:
-  ```bash
-  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
-  nvm install --lts
-  ```
-- **Direct download**: Visit https://nodejs.org/ and download the LTS version for your OS  
+
+**Linux:**
+```bash
+# Using Node Version Manager (nvm)
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
+source ~/.bashrc
+nvm install --lts
+nvm use --lts
+```
+
+**macOS:**
+```bash
+# Using Homebrew
+brew install node
+
+# Or using nvm
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
+source ~/.zshrc
+nvm install --lts
+nvm use --lts
+```
+
+**Windows PowerShell:**
+```powershell
+# Using winget
+winget install OpenJS.NodeJS.LTS
+
+# Or using Chocolatey
+choco install nodejs-lts -y
+
+# Or using nvm for Windows
+irm https://github.com/coreybutler/nvm-windows/releases/download/1.1.11/nvm-setup.exe -OutFile nvm-setup.exe
+Start-Process nvm-setup.exe -Wait
+nvm install lts
+nvm use lts
+```
+
+Verify installation with `node --version` and `npm --version`.  
 
 ---
 
