@@ -72,6 +72,9 @@ contract BurnMintERC677 is ERC20, ERC20Burnable, IERC677, IERC165, Ownable {
     // Maximum supply: 5 billion tokens with 18 decimals
     uint256 public constant MAX_SUPPLY = 5_000_000_000 * 10**18;
 
+    // Milestone threshold for gamification
+    uint256 public constant MILESTONE_THRESHOLD = 100_000_000 * 10**18;
+
     /**
      * @dev Constructor initializes the token with name, symbol, and initial supply
      * @param name_ The name of the token
@@ -138,11 +141,37 @@ contract BurnMintERC677 is ERC20, ERC20Burnable, IERC677, IERC165, Ownable {
     // ================================================================
 
     /**
-     * @dev Mints tokens to a specific address
+     * @dev Mints new tokens to a specific address
      * @param account The address to mint tokens to
      * @param amount The amount of tokens to mint
      */
     function mint(address account, uint256 amount) external onlyMinter {
+        _mintInternal(account, amount);
+    }
+    
+    /**
+     * @dev Special mint function for CCIP cross-chain mints with additional metadata
+     * @param account The address to mint tokens to
+     * @param amount The amount of tokens to mint
+     * @param sourceChain The chain the tokens are coming from
+     * @param ccipMessageId The CCIP message ID for tracking
+     */
+    function mintWithCCIPData(
+        address account,
+        uint256 amount,
+        string calldata sourceChain,
+        bytes32 ccipMessageId
+    ) external onlyMinter {
+        _mintInternal(account, amount);
+        emit CrossChainMint(account, amount, sourceChain, ccipMessageId);
+    }
+
+    /**
+     * @dev Internal helper function for minting logic shared between mint functions
+     * @param account The address to mint tokens to
+     * @param amount The amount of tokens to mint
+     */
+    function _mintInternal(address account, uint256 amount) private {
         if (account == address(0)) revert InvalidRecipient(account);
         
         uint256 supplyAfterMint = totalSupply() + amount;
@@ -166,55 +195,16 @@ contract BurnMintERC677 is ERC20, ERC20Burnable, IERC677, IERC165, Ownable {
         );
         
         // Check for milestones (every 100M tokens minted to an address)
-        uint256 milestone = s_totalMintedPerAddress[account] / (100_000_000 * 10**18);
-        uint256 previousMilestone = (s_totalMintedPerAddress[account] - amount) / (100_000_000 * 10**18);
+        uint256 milestone = s_totalMintedPerAddress[account] / MILESTONE_THRESHOLD;
+        uint256 previousMilestone = (s_totalMintedPerAddress[account] - amount) / MILESTONE_THRESHOLD;
         
         if (milestone > previousMilestone) {
             emit MintMilestone(
                 account,
                 s_totalMintedPerAddress[account],
-                milestone * 100_000_000 * 10**18
+                milestone * MILESTONE_THRESHOLD
             );
         }
-    }
-    
-    /**
-     * @dev Special mint function for CCIP cross-chain mints with additional metadata
-     * @param account The address to mint tokens to
-     * @param amount The amount of tokens to mint
-     * @param sourceChain The chain the tokens are coming from
-     * @param ccipMessageId The CCIP message ID for tracking
-     */
-    function mintWithCCIPData(
-        address account,
-        uint256 amount,
-        string calldata sourceChain,
-        bytes32 ccipMessageId
-    ) external onlyMinter {
-        if (account == address(0)) revert InvalidRecipient(account);
-        
-        uint256 supplyAfterMint = totalSupply() + amount;
-        if (supplyAfterMint > s_maxSupply) {
-            revert MaxSupplyExceeded(supplyAfterMint);
-        }
-        
-        _mint(account, amount);
-        
-        // Update gamification tracking
-        s_totalMintedPerAddress[account] += amount;
-        s_totalMintEvents++;
-        
-        // Emit cross-chain mint event
-        emit CrossChainMint(account, amount, sourceChain, ccipMessageId);
-        
-        // Also emit standard mint event
-        emit TokensMinted(
-            msg.sender,
-            account,
-            amount,
-            supplyAfterMint,
-            block.timestamp
-        );
     }
 
     /**
