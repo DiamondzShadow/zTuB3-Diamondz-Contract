@@ -14,31 +14,26 @@
 
 ## Deployment Steps
 
-1. **Set Environment Variables**:
+1. **Create your .env file**:
    ```bash
-   export TOKEN_NAME="Diamondz Shadow Game + Movies"
-   export TOKEN_SYMBOL="SDM"
-   export INITIAL_ACCOUNT="YOUR_WALLET_ADDRESS_HERE"
-   export PRIVATE_KEY="YOUR_PRIVATE_KEY_HERE"
-   export RPC_URL="https://hardworking-greatest-road.diamondz-zslab.quiknode.pro/"
+   cp .env.example .env
    ```
 
-2. **Deploy the Contract**:
-   ```bash
-   forge script script/DeployBurnMintERC677.s.sol:DeployBurnMintERC677 \
-     --rpc-url $RPC_URL \
-     --private-key $PRIVATE_KEY \
-     --broadcast
-   ```
+2. **Edit .env file** and replace the placeholder values:
+   - `INITIAL_ACCOUNT`: Your wallet address that will receive the 4 billion initial tokens
+   - `PRIVATE_KEY`: Your wallet's private key (keep this secure!)
+   - `RPC_URL`: Already set to your QuickNode endpoint
 
-3. **Or Use the Deployment Script**:
+3. **Run the deployment script**:
    ```bash
-   # Edit the script to add your wallet address and private key
-   nano deploy_sdm_token.sh
-   
-   # Run the deployment
    ./deploy_sdm_token.sh
    ```
+
+The script will:
+- Validate that all required environment variables are set
+- Check that placeholder values have been replaced
+- Deploy the contract with proper error handling
+- Optionally verify on Etherscan if `ETHERSCAN_API_KEY` is provided
 
 ## Important Notes
 - The contract will mint 4 billion tokens to the `INITIAL_ACCOUNT` address
