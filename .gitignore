@@ -21,3 +21,9 @@ node_modules/
 
 # DS Store (Mac)
 .DS_Store
+
+# Ignore broadcast logs
+broadcast/
+
+# Add any other files containing sensitive data (optional)
+secrets.txt
