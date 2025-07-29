@@ -128,8 +128,8 @@ Verify installation with `git --version`.
 **Linux:**
 ```bash
 # Using Node Version Manager (nvm)
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
-source ~/.bashrc
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+source ~/.nvm/nvm.sh
 nvm install --lts
 nvm use --lts
 ```
@@ -140,8 +140,8 @@ nvm use --lts
 brew install node
 
 # Or using nvm
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
-source ~/.zshrc
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+source ~/.nvm/nvm.sh
 nvm install --lts
 nvm use --lts
 ```
@@ -154,8 +154,8 @@ winget install OpenJS.NodeJS.LTS
 # Or using Chocolatey
 choco install nodejs-lts -y
 
-# Or using nvm for Windows
-irm https://github.com/coreybutler/nvm-windows/releases/download/1.1.11/nvm-setup.exe -OutFile nvm-setup.exe
+# Or using nvm for Windows (check https://github.com/coreybutler/nvm-windows/releases for latest)
+irm https://github.com/coreybutler/nvm-windows/releases/download/1.1.12/nvm-setup.exe -OutFile nvm-setup.exe
 Start-Process nvm-setup.exe -Wait
 nvm install lts
 nvm use lts
