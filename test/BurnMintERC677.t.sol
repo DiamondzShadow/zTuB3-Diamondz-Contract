@@ -29,7 +29,7 @@ contract BurnMintERC677Test is Test {
     address public minter;
     address public burner;
     
-    uint256 public constant INITIAL_SUPPLY = 5_000_000_000 * 10**18;
+    uint256 public constant INITIAL_SUPPLY = 4_000_000_000 * 10**18;
     
     event Transfer(address indexed from, address indexed to, uint256 value);
     event Transfer(address indexed from, address indexed to, uint256 value, bytes data);
@@ -58,7 +58,7 @@ contract BurnMintERC677Test is Test {
         assertEq(token.decimals(), 18);
         assertEq(token.totalSupply(), INITIAL_SUPPLY);
         assertEq(token.balanceOf(owner), INITIAL_SUPPLY);
-        assertEq(token.maxSupply(), INITIAL_SUPPLY);
+        assertEq(token.maxSupply(), token.MAX_SUPPLY());
         assertTrue(token.isMinter(owner));
         assertTrue(token.isBurner(owner));
     }
@@ -140,25 +140,34 @@ contract BurnMintERC677Test is Test {
     }
     
     function test_MaxSupplyEnforcement() public {
+        // First, mint up to the max supply limit
+        uint256 maxSupply = token.MAX_SUPPLY();
+        uint256 currentSupply = token.totalSupply();
+        uint256 availableToMint = maxSupply - currentSupply;
+        
+        // Mint right up to the limit
+        token.mint(alice, availableToMint);
+        assertEq(token.totalSupply(), maxSupply);
+        
         // Try to mint more than max supply
         uint256 exceedAmount = 1 * 10**18;
         
         vm.expectRevert(
             abi.encodeWithSelector(
                 BurnMintERC677.MaxSupplyExceeded.selector,
-                INITIAL_SUPPLY + exceedAmount
+                maxSupply + exceedAmount
             )
         );
         token.mint(alice, exceedAmount);
         
         // Increase max supply
-        uint256 newMaxSupply = INITIAL_SUPPLY + 1000 * 10**18;
+        uint256 newMaxSupply = maxSupply + 1000 * 10**18;
         token.setMaxSupply(newMaxSupply);
         assertEq(token.maxSupply(), newMaxSupply);
         
         // Now minting should work
-        token.mint(alice, exceedAmount);
-        assertEq(token.balanceOf(alice), exceedAmount);
+        token.mint(bob, exceedAmount);
+        assertEq(token.balanceOf(bob), exceedAmount);
     }
     
     function test_RoleManagement() public {
