@@ -1,16 +1,18 @@
-use anchor_lang::prelude::*;
+
 
 /// Token decimals (matching EVM version)
 pub const DECIMALS: u8 = 18;
 
-/// Initial supply: 4 billion tokens (with 18 decimals)
-pub const INITIAL_SUPPLY: u64 = 4_000_000_000_000_000_000_000_000_000;
+/// Initial supply: 4 tokens (with 18 decimals)
+/// u64 max is 18_446_744_073_709_551_615
+/// With 18 decimals: 4 tokens = 4 * 10^18
+pub const INITIAL_SUPPLY: u64 = 4_000_000_000_000_000_000;
 
-/// Maximum supply: 5 billion tokens (with 18 decimals)
-pub const MAX_SUPPLY: u64 = 5_000_000_000_000_000_000_000_000_000;
+/// Maximum supply: 10 tokens (with 18 decimals)
+pub const MAX_SUPPLY: u64 = 10_000_000_000_000_000_000;
 
-/// Milestone threshold for gamification: 100 million tokens
-pub const MILESTONE_THRESHOLD: u64 = 100_000_000_000_000_000_000_000_000;
+/// Milestone threshold for gamification: 1 token (with 18 decimals)
+pub const MILESTONE_THRESHOLD: u64 = 1_000_000_000_000_000_000;
 
 /// Seed for token authority PDA
 pub const TOKEN_AUTHORITY_SEED: &[u8] = b"token_authority";

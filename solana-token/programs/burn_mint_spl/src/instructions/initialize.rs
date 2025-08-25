@@ -90,6 +90,9 @@ pub fn handler(
     let clock = Clock::get()?;
     let now = clock.unix_timestamp;
 
+    // Get the token config key before mutable borrow
+    let token_config_key = ctx.accounts.token_config.key();
+
     // Initialize token config
     let token_config = &mut ctx.accounts.token_config;
     token_config.owner = ctx.accounts.owner.key();
@@ -119,7 +122,7 @@ pub fn handler(
 
     // Initialize owner minter role
     let owner_minter_role = &mut ctx.accounts.owner_minter_role;
-    owner_minter_role.token_config = ctx.accounts.token_config.key();
+    owner_minter_role.token_config = token_config_key;
     owner_minter_role.minter = ctx.accounts.owner.key();
     owner_minter_role.granted_at = now;
     owner_minter_role.granted_by = ctx.accounts.owner.key();
@@ -129,7 +132,7 @@ pub fn handler(
 
     // Initialize owner burner role
     let owner_burner_role = &mut ctx.accounts.owner_burner_role;
-    owner_burner_role.token_config = ctx.accounts.token_config.key();
+    owner_burner_role.token_config = token_config_key;
     owner_burner_role.burner = ctx.accounts.owner.key();
     owner_burner_role.granted_at = now;
     owner_burner_role.granted_by = ctx.accounts.owner.key();

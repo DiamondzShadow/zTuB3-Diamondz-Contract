@@ -6,7 +6,7 @@ use crate::constants::*;
 
 #[derive(Accounts)]
 #[instruction(amount: u64, source_chain: String, ccip_message_id: [u8; 32])]
-pub struct MintTokens<'info> {
+pub struct MintTokensWithCcip<'info> {
     #[account(
         mut,
         seeds = [TOKEN_CONFIG_SEED],
@@ -56,7 +56,7 @@ pub struct MintTokens<'info> {
 }
 
 pub fn handler(
-    ctx: Context<MintTokens>,
+    ctx: Context<MintTokensWithCcip>,
     amount: u64,
     source_chain: String,
     ccip_message_id: [u8; 32],

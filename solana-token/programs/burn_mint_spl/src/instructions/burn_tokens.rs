@@ -1,5 +1,5 @@
 use anchor_lang::prelude::*;
-use anchor_spl::token::{self, Token, TokenAccount, Burn};
+use anchor_spl::token::{self, Token, TokenAccount, Mint, Burn};
 use crate::state::*;
 use crate::error::*;
 use crate::constants::*;
@@ -15,7 +15,13 @@ pub struct BurnTokens<'info> {
 
     #[account(
         mut,
-        token::mint = token_config.mint,
+        address = token_config.mint
+    )]
+    pub mint: Account<'info, Mint>,
+
+    #[account(
+        mut,
+        token::mint = mint,
         token::authority = burner,
     )]
     pub burner_token_account: Account<'info, TokenAccount>,
@@ -47,7 +53,7 @@ pub fn handler(ctx: Context<BurnTokens>, amount: u64) -> Result<()> {
 
     // Burn the tokens
     let cpi_accounts = Burn {
-        mint: ctx.accounts.burner_token_account.mint.clone(),
+        mint: ctx.accounts.mint.to_account_info(),
         from: ctx.accounts.burner_token_account.to_account_info(),
         authority: ctx.accounts.burner.to_account_info(),
     };
