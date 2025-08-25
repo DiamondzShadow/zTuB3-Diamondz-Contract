@@ -5,3 +5,24 @@ target
 node_modules
 test-ledger
 .yarn
+
+# Environment files - DO NOT COMMIT KEYS
+.env
+.env.local
+.env.production
+
+# Security - Never commit these
+**/id.json
+**/keypair.json
+**/*-keypair.json
+
+
+# Environment files - DO NOT COMMIT KEYS
+.env
+.env.local
+.env.production
+
+# Security - Never commit these
+**/id.json
+**/keypair.json
+**/*-keypair.json
