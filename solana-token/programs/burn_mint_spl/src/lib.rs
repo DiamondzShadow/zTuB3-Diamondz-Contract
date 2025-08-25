@@ -37,7 +37,7 @@ pub mod burn_mint_spl {
 
     /// Mint tokens with CCIP cross-chain metadata
     pub fn mint_tokens_with_ccip(
-        ctx: Context<MintTokens>,
+        ctx: Context<MintTokensWithCcip>,
         amount: u64,
         source_chain: String,
         ccip_message_id: [u8; 32],
