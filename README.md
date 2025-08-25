@@ -12,10 +12,14 @@
   - [Clone & Install](#clone--install)  
   - [Configure Environment](#configure-environment)  
   - [Compile & Test](#compile--test)  
-- [Deployment](#deployment)  
+- [EVM Deployment](#evm-deployment)  
   - [Dry Run](#dry-run)  
   - [Live Deploy](#live-deploy)  
-  - [Verify & ABI](#verify--abi)  
+  - [Verify & ABI](#verify--abi)
+- [Solana Deployment](#solana-deployment)
+  - [Prerequisites](#solana-prerequisites)
+  - [Quick Deploy](#quick-deploy)
+  - [Detailed Setup](#detailed-setup)  
 - [Usage Examples](#usage-examples)  
   - [Ethers.js](#ethersjs)  
   - [CLI](#cli)  
@@ -211,7 +215,7 @@ forge test
 
 ---
 
-## Deployment
+## EVM Deployment
 
 ### Dry Run
 
@@ -251,6 +255,100 @@ git add abi.json
 git commit -m "Add BurnMintERC677 ABI post-deploy"
 git push
 ```
+
+---
+
+## Solana Deployment
+
+This project includes a complete Solana token implementation that mirrors the EVM version for cross-chain CCIP integration.
+
+### Solana Prerequisites
+
+Install additional tools for Solana development:
+
+```bash
+# Install Solana CLI
+sh -c "$(curl -sSfL https://release.solana.com/stable/install)"
+
+# Install Anchor Framework
+cargo install --git https://github.com/coral-xyz/anchor avm --locked
+avm install latest
+avm use latest
+
+# Install Yarn
+npm install -g yarn
+```
+
+### Quick Deploy
+
+```bash
+# Navigate to Solana token directory
+cd solana-token
+
+# Install dependencies
+yarn install
+
+# Deploy to Solana devnet for testing
+yarn deploy:devnet
+
+# Or deploy to mainnet (after testing)
+yarn deploy:mainnet
+
+# Test interactions
+yarn interact:devnet
+```
+
+### Detailed Setup
+
+1. **Create Solana wallet** (if needed):
+```bash
+solana-keygen new --outfile ~/.config/solana/id.json
+```
+
+2. **Configure for devnet**:
+```bash
+solana config set --url https://api.devnet.solana.com
+export ANCHOR_WALLET=~/.config/solana/id.json
+
+# Fund wallet for testing
+solana airdrop 2 --url https://api.devnet.solana.com
+```
+
+3. **Build and deploy**:
+```bash
+cd solana-token
+anchor build
+anchor deploy
+yarn deploy:devnet
+```
+
+4. **For mainnet deployment**:
+```bash
+solana config set --url https://api.mainnet-beta.solana.com
+anchor config set --provider.cluster mainnet
+anchor deploy
+yarn deploy:mainnet
+```
+
+### Verification
+
+After deployment:
+- Check deployment info: `cat deployment-devnet.json`
+- Verify on [Solana Explorer](https://explorer.solana.com)
+- Test interactions: `yarn interact:devnet`
+
+### Token Configuration
+
+The Solana token exactly mirrors the EVM version:
+- **Initial Supply**: 4 billion tokens
+- **Max Supply**: 5 billion tokens  
+- **Decimals**: 18
+- **Features**: CCIP compatible, role-based access, milestone tracking
+
+For complete Solana documentation, see:
+- `solana-token/DEPLOYMENT_GUIDE.md` - Detailed deployment guide
+- `README_SOLANA.md` - Complete Solana documentation
+- `SOLANA_DEPLOYMENT_SUMMARY.md` - Project overview
 
 ---
 
