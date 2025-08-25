@@ -16,10 +16,10 @@ I have successfully created a comprehensive Solana token implementation that per
 - **Constants**: All configuration constants matching your EVM version
 
 #### **Key Features Implemented**
-✅ **Exact Token Parameters**: 4B initial supply, 5B max supply, 18 decimals  
+✅ **Exact Token Parameters**: 4 billion initial supply (4,000,000,000 tokens), 5 billion max supply (5,000,000,000 tokens), 18 decimals  
 ✅ **Role-Based Access Control**: Minters and burners with full management  
 ✅ **CCIP Integration**: Cross-chain mint tracking with metadata  
-✅ **Gamification Features**: Milestone tracking and analytics events  
+✅ **Gamification Features**: Milestone tracking (100M tokens) and analytics events  
 ✅ **Transfer and Call**: Solana equivalent to ERC677's transferAndCall  
 ✅ **Max Supply Protection**: Runtime enforcement of supply limits  
 ✅ **Comprehensive Events**: Full event logging for analytics  
@@ -81,12 +81,12 @@ Your Solana token is a **perfect mirror** of your EVM implementation:
 
 | Feature | EVM Token | Solana Token | Status |
 |---------|-----------|--------------|--------|
-| Initial Supply | 4B tokens | 4B tokens | ✅ Identical |
-| Max Supply | 5B tokens | 5B tokens | ✅ Identical |
+| Initial Supply | 4,000,000,000 tokens | 4,000,000,000 tokens | ✅ Identical |
+| Max Supply | 5,000,000,000 tokens | 5,000,000,000 tokens | ✅ Identical |
 | Decimals | 18 | 18 | ✅ Identical |
 | Mint/Burn Roles | ✅ | ✅ | ✅ Full parity |
 | CCIP Integration | ✅ | ✅ | ✅ Enhanced |
-| Milestone Tracking | ✅ | ✅ | ✅ Full parity |
+| Milestone Tracking | 100M tokens | 100M tokens | ✅ Full parity |
 | Owner Controls | ✅ | ✅ | ✅ Full parity |
 | Transfer & Call | ERC677 | Custom | ✅ Equivalent |
 
@@ -139,7 +139,7 @@ EVM Chain (Arbitrum)          Solana
 │ ├─ 4B initial       │◄────►│ ├─ 4B initial       │
 │ ├─ 5B max supply    │ CCIP │ ├─ 5B max supply    │
 │ ├─ Mint/Burn roles  │      │ ├─ Mint/Burn roles  │
-│ ├─ Milestone track  │      │ ├─ Milestone track  │
+│ ├─ 100M milestones  │      │ ├─ 100M milestones  │
 │ └─ ERC677 transfers │      │ └─ Transfer & Call  │
 └─────────────────────┘      └─────────────────────┘
 ```

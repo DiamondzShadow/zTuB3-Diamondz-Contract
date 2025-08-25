@@ -7,8 +7,8 @@ A comprehensive SPL token implementation that mirrors the functionality of your 
 ### Core Token Features
 - **SPL Token Standard**: Native Solana token implementation
 - **18 Decimals**: Matching your EVM token for consistency
-- **4 Billion Initial Supply**: Same as your EVM deployment
-- **5 Billion Max Supply**: With runtime enforcement
+- **4 Billion Initial Supply**: Same as your EVM deployment (4,000,000,000 tokens)
+- **5 Billion Max Supply**: With runtime enforcement (5,000,000,000 tokens)
 - **Role-Based Access Control**: Granular mint and burn permissions
 
 ### Cross-Chain Integration
@@ -18,7 +18,7 @@ A comprehensive SPL token implementation that mirrors the functionality of your 
 - **Event Logging**: Comprehensive events for cross-chain analytics
 
 ### Gamification & Analytics
-- **Milestone Tracking**: Automatic detection of 100M token milestones
+- **Milestone Tracking**: Automatic detection of 100M token milestones (100,000,000 tokens)
 - **User Statistics**: Per-address mint/burn tracking
 - **Role Statistics**: Monitor minter and burner activity
 - **Structured Logging**: Program logs for analytics platforms

@@ -35,7 +35,7 @@
 - **Role-based minting and burning** by delegating mint/burn authorities  
 - **Gamification features** with milestone tracking and structured logs  
 - **Analytics-ready** with program logs and on-chain accounts for tracking  
-- **4 billion initial supply** with a 5 billion max supply cap (enforced by program logic)  
+- **4 billion initial supply** (4,000,000,000 tokens) with a **5 billion max supply cap** (5,000,000,000 tokens) enforced by program logic  
 
 ---
 
@@ -48,7 +48,7 @@
 - 🌉 CCIP-ready for cross-chain transfers  
 - 📊 Structured program logs for analytics  
 - 🏦 Owner-controlled authority management  
-- 🛡️ Maximum supply guardrail (5B tokens)  
+- 🛡️ Maximum supply guardrail (5,000,000,000 tokens)  
 
 ---
 
@@ -337,7 +337,7 @@ monitorLogs().catch(console.error);
 
 The token and optional program include built-in gamification features:
 
-- **Milestone Tracking**: Automatic detection when addresses reach 100M token milestones  
+- **Milestone Tracking**: Automatic detection when addresses reach 100M token milestones (100,000,000 tokens)  
 - **Mint Tracking**: Total minted amount per address tracked in program state  
 - **Structured Logs**: Program logs for analytics and achievements  
 - **Cross-chain Attribution**: Track mints from different chains via CCIP metadata  

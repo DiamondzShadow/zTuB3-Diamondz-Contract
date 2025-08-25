@@ -39,7 +39,7 @@
 - **Role-based minting and burning** for flexible supply management  
 - **Gamification features** with milestone tracking and rich event emissions  
 - **Analytics-ready** with comprehensive event data for platforms like Artemis  
-- **4 billion initial supply** with a 5 billion max supply cap  
+- **4 billion initial supply** (4,000,000,000 tokens) with a **5 billion max supply cap** (5,000,000,000 tokens)  
 
 ---
 
@@ -52,7 +52,7 @@
 - 🌉 CCIP-ready for cross-chain transfers  
 - 📊 Rich event emissions for analytics  
 - 🏦 Owner-controlled role management  
-- 🛡️ Maximum supply guardrail (5B tokens)  
+- 🛡️ Maximum supply guardrail (5,000,000,000 tokens)  
 
 ---
 
