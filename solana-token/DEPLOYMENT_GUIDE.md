@@ -130,7 +130,7 @@ node scripts/deploy.js
 
 This will:
 - Deploy the program to Solana
-- Initialize the token with 4B initial supply and 5B max supply
+- Initialize the token with 4 billion initial supply (4,000,000,000 tokens) and 5 billion max supply (5,000,000,000 tokens)
 - Set up initial roles for the deployer
 - Save deployment info to `deployment-devnet.json`
 
@@ -237,8 +237,8 @@ Your Solana BurnMintSPL token mirrors the EVM BurnMintERC677 token:
 
 | Feature | EVM (BurnMintERC677) | Solana (BurnMintSPL) |
 |---------|---------------------|---------------------|
-| Initial Supply | 4B tokens | 4B tokens |
-| Max Supply | 5B tokens | 5B tokens |
+| Initial Supply | 4,000,000,000 tokens | 4,000,000,000 tokens |
+| Max Supply | 5,000,000,000 tokens | 5,000,000,000 tokens |
 | Decimals | 18 | 18 |
 | Mint/Burn Roles | ✅ | ✅ |
 | CCIP Compatible | ✅ | ✅ |
