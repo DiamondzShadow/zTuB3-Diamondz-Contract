@@ -122,11 +122,11 @@ console.log(`Max Supply: ${config.maxSupply.toString()}`);
 // Mint tokens
 const mintTx = await client.mintTokens(
   recipientPubkey,
-  '1000000000000000000000' // 1000 tokens with 18 decimals
+  '1000000000000' // 1000 tokens with 9 decimals
 );
 
 // Burn tokens
-const burnTx = await client.burnTokens('100000000000000000000'); // 100 tokens
+const burnTx = await client.burnTokens('100000000000'); // 100 tokens with 9 decimals
 ```
 
 ### CCIP Cross-Chain Minting

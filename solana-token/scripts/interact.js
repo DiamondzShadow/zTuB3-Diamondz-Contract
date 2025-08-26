@@ -331,7 +331,7 @@ async function demonstrateTokenFunctionality() {
     const testRecipient = Keypair.generate().publicKey;
     console.log(`\n🪙 Minting 1000 tokens to test recipient: ${testRecipient.toString()}`);
     
-    const mintTx = await client.mintTokens(testRecipient, '1000000000000000000000'); // 1000 tokens with 18 decimals
+    const mintTx = await client.mintTokens(testRecipient, '1000000000000'); // 1000 tokens with 9 decimals
     console.log(`  Transaction: ${mintTx}`);
 
     // Demonstrate CCIP mint

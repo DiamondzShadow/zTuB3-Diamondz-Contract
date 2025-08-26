@@ -136,7 +136,7 @@ describe("BurnMintSPL", () => {
   });
 
   it("Mints tokens to a new user", async () => {
-    const mintAmount = new anchor.BN("1000000000000000000000"); // 1000 tokens
+    const mintAmount = new anchor.BN("1000000000000"); // 1000 tokens with 9 decimals
 
     // Create token account for test user
     testUserTokenAccount = await getOrCreateAssociatedTokenAccount(
@@ -258,7 +258,7 @@ describe("BurnMintSPL", () => {
   });
 
   it("Burns tokens", async () => {
-    const burnAmount = new anchor.BN("100000000000000000000"); // 100 tokens
+    const burnAmount = new anchor.BN("100000000000"); // 100 tokens with 9 decimals
 
     const tx = await program.methods
       .burnTokens(burnAmount)
@@ -324,7 +324,7 @@ describe("BurnMintSPL", () => {
   });
 
   it("Fails to mint when role is revoked", async () => {
-    const mintAmount = new anchor.BN("100000000000000000000"); // 100 tokens
+    const mintAmount = new anchor.BN("100000000000"); // 100 tokens with 9 decimals
 
     try {
       await program.methods
@@ -352,7 +352,7 @@ describe("BurnMintSPL", () => {
   it("Fails to exceed max supply", async () => {
     // Try to mint more than the remaining supply
     const currentSupply = await (await program.account.tokenConfig.fetch(tokenConfig)).maxSupply;
-    const excessiveAmount = currentSupply.add(new anchor.BN("1000000000000000000000")); // Max supply + 1000 tokens
+    const excessiveAmount = currentSupply.add(new anchor.BN("1000000000000")); // Max supply + 1000 tokens
 
     try {
       await program.methods
