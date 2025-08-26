@@ -4,8 +4,8 @@ const { TOKEN_PROGRAM_ID, createMint, getOrCreateAssociatedTokenAccount, mintTo 
 const fs = require('fs');
 
 // Configuration
-const NETWORK = process.env.SOLANA_NETWORK || 'devnet';
-const RPC_URL = process.env.RPC_URL || 'https://api.devnet.solana.com';
+const NETWORK = process.env.SOLANA_NETWORK || 'mainnet-beta';
+const RPC_URL = process.env.RPC_URL || 'https://api.mainnet-beta.solana.com';
 
 // Token configuration - mirroring EVM version
 const TOKEN_CONFIG = {
