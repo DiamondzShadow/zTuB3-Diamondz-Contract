@@ -1,0 +1,28 @@
+{
+  "network": "mainnet-beta",
+  "tokenMint": "CrqJ1HPrrDS8DDwWneBXGX5eqoxDF7NcYLDhFTCXVUsr",
+  "tokenName": "Diamondz Shadow Game + Movies",
+  "tokenSymbol": "SDM",
+  "decimals": 9,
+  "initialSupply": "4000000000000000000",
+  "maxSupply": "5000000000000000000",
+  "deployer": "AhBwuxRn6ruvwoKMMwH9fTr8yMNbWSXpJuYTDoAjhsWx",
+  "deployerTokenAccount": "GrYRdgGVpcpYXbExzGS2GS4qb4XprbFgN9BmSWAeyQ2P",
+  "timestamp": "2025-08-26T02:01:07.289Z",
+  "ccipCompatible": true,
+  "evmTokenAddress": "0xYourEVMTokenAddress",
+  "evmChainSelector": "5009297550715157269",
+  "nextSteps": [
+    "1. Register token with CCIP router program",
+    "2. Set up burn/mint authorities for CCIP pool",
+    "3. Configure cross-chain rate limits",
+    "4. Test cross-chain transfers on testnet first",
+    "5. Submit token for CCIP lane approval"
+  ],
+  "ccipSetupCommands": {
+    "registerToken": "Register this token (CrqJ1HPrrDS8DDwWneBXGX5eqoxDF7NcYLDhFTCXVUsr) with CCIP router",
+    "setBurnRole": "Transfer burn authority to CCIP pool program",
+    "setMintRole": "Transfer mint authority to CCIP pool program",
+    "configureRateLimits": "Set up rate limiting for cross-chain transfers"
+  }
+}
