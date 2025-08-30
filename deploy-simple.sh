@@ -20,15 +20,38 @@ avm use latest
 
 echo "✅ Software installed"
 
-# Import your wallet
-echo "🔑 Import your wallet with SOL:"
-echo "Enter your private key or seed phrase:"
+# Setup wallet
+echo "🔑 Setting up wallet..."
 mkdir -p ~/.config/solana
-solana-keygen recover 'prompt:?key=0/0' --outfile ~/.config/solana/id.json
 
-export ANCHOR_WALLET=~/.config/solana/id.json
-WALLET=$(solana address)
-echo "Using wallet: $WALLET"
+# Check if wallet already exists
+if [[ -f ~/.config/solana/id.json ]]; then
+    echo "✅ Found existing wallet"
+    export ANCHOR_WALLET=~/.config/solana/id.json
+    WALLET=$(solana address)
+    echo "Using wallet: $WALLET"
+else
+    echo "No wallet found. Choose option:"
+    echo "1 = Import your existing wallet (recommended)"
+    echo "2 = Create new wallet"
+    read -p "Enter 1 or 2: " wallet_choice
+    
+    if [[ $wallet_choice == "1" ]]; then
+        echo "Importing your wallet..."
+        echo "When prompted, enter your seed phrase (12 or 24 words)"
+        solana-keygen recover --outfile ~/.config/solana/id.json
+        echo "✅ Wallet imported"
+    else
+        echo "Creating new wallet..."
+        solana-keygen new --outfile ~/.config/solana/id.json --no-bip39-passphrase
+        echo "✅ New wallet created"
+        echo "⚠️  SAVE YOUR SEED PHRASE! You'll need it to recover your wallet."
+    fi
+    
+    export ANCHOR_WALLET=~/.config/solana/id.json
+    WALLET=$(solana address)
+    echo "Using wallet: $WALLET"
+fi
 
 # Choose network
 echo "1 = Devnet (testing)"
@@ -48,11 +71,41 @@ fi
 echo "Balance: $(solana balance)"
 
 # Deploy
+echo "📁 Checking project structure..."
+if [[ ! -d "solana-token" ]]; then
+    echo "❌ solana-token directory not found!"
+    echo "Make sure you're in the correct project directory"
+    echo "Current directory: $(pwd)"
+    echo "Contents: $(ls -la)"
+    exit 1
+fi
+
 cd solana-token
-rm -rf target/ node_modules/ || true
+echo "✅ Found solana-token directory"
+
+# Clean old builds
+echo "🧹 Cleaning old builds..."
+rm -rf target/ node_modules/ deployment-*.json || true
+
+# Install dependencies
+echo "📦 Installing dependencies..."
 yarn install
+
+# Configure and build
+echo "🔨 Building program..."
 anchor config set --provider.cluster $NETWORK
 anchor build
+
+# Verify build
+if [[ ! -f "target/deploy/burn_mint_spl.so" ]]; then
+    echo "❌ Build failed - program binary not found"
+    exit 1
+fi
+
+echo "✅ Build successful"
+
+# Deploy program
+echo "🚀 Deploying program to $NETWORK..."
 anchor deploy
 
 export SOLANA_NETWORK=$NETWORK
