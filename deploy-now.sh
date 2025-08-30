@@ -55,13 +55,32 @@ echo "✅ All software installed!"
 # Setup wallet
 echo "🔑 Setting up wallet..."
 mkdir -p ~/.config/solana
-if [[ ! -f ~/.config/solana/id.json ]]; then
-    solana-keygen new --outfile ~/.config/solana/id.json --no-bip39-passphrase
-fi
 
-export ANCHOR_WALLET=~/.config/solana/id.json
-WALLET=$(solana address)
-echo "Wallet: $WALLET"
+# Check if user has existing wallet
+if [[ -f ~/.config/solana/id.json ]]; then
+    echo "Found existing wallet"
+    export ANCHOR_WALLET=~/.config/solana/id.json
+    WALLET=$(solana address)
+    echo "Using wallet: $WALLET"
+else
+    echo "No wallet found. Options:"
+    echo "1 = Import your existing wallet"
+    echo "2 = Create new wallet"
+    read -p "Enter 1 or 2: " wallet_choice
+    
+    if [[ $wallet_choice == "1" ]]; then
+        echo "Enter your wallet private key or seed phrase:"
+        solana-keygen recover 'prompt:?key=0/0' --outfile ~/.config/solana/id.json
+        echo "✅ Wallet imported"
+    else
+        solana-keygen new --outfile ~/.config/solana/id.json --no-bip39-passphrase
+        echo "✅ New wallet created"
+    fi
+    
+    export ANCHOR_WALLET=~/.config/solana/id.json
+    WALLET=$(solana address)
+    echo "Wallet: $WALLET"
+fi
 
 # Choose network
 echo ""
@@ -75,8 +94,9 @@ if [[ $choice == "1" ]]; then
     RPC="https://api.devnet.solana.com"
     echo "Using Devnet"
     
-    # Get free SOL
+    # Configure and get free SOL
     solana config set --url $RPC
+    echo "Getting free devnet SOL..."
     solana airdrop 2
     
 elif [[ $choice == "2" ]]; then
@@ -84,14 +104,21 @@ elif [[ $choice == "2" ]]; then
     RPC="https://api.mainnet-beta.solana.com"
     echo "Using Mainnet"
     
+    # Configure mainnet
     solana config set --url $RPC
     BALANCE=$(solana balance)
-    echo "Balance: $BALANCE"
-    echo "⚠️  Make sure you have at least 0.1 SOL for deployment"
-    read -p "Continue? (y/n): " confirm
-    if [[ $confirm != "y" ]]; then
+    echo "Your balance: $BALANCE"
+    
+    # Check if enough SOL
+    BALANCE_NUM=$(echo $BALANCE | cut -d' ' -f1)
+    if (( $(echo "$BALANCE_NUM < 0.1" | bc -l) )); then
+        echo "❌ You need at least 0.1 SOL for deployment"
+        echo "Your wallet: $WALLET"
+        echo "Send SOL to your wallet and run this script again"
         exit 1
     fi
+    
+    echo "✅ You have enough SOL to deploy"
 else
     echo "Invalid choice"
     exit 1
