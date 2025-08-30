@@ -2,8 +2,40 @@
 
 # SUPER SIMPLE SDM TOKEN DEPLOYMENT
 # For GCP VM with existing wallet and SOL
+# Usage: ./deploy-simple.sh [PROJECT_DIR]
 
-echo "💎 Deploying SDM Token: Diamondz Shadow Game + Movies"
+set -euo pipefail  # Exit on error, undefined vars, pipe failures
+
+# Configuration
+readonly SCRIPT_NAME="$(basename "$0")"
+readonly TOKEN_NAME="Diamondz Shadow Game + Movies"
+readonly TOKEN_SYMBOL="SDM"
+
+# Colors for output
+readonly RED='\033[0;31m'
+readonly GREEN='\033[0;32m'
+readonly YELLOW='\033[1;33m'
+readonly BLUE='\033[0;34m'
+readonly NC='\033[0m' # No Color
+
+# Helper functions
+print_error() {
+    echo -e "${RED}❌ $1${NC}" >&2
+}
+
+print_success() {
+    echo -e "${GREEN}✅ $1${NC}"
+}
+
+print_info() {
+    echo -e "${BLUE}ℹ️  $1${NC}"
+}
+
+print_warning() {
+    echo -e "${YELLOW}⚠️  $1${NC}"
+}
+
+echo "💎 Deploying SDM Token: $TOKEN_NAME ($TOKEN_SYMBOL)"
 
 # Quick installs
 sudo apt update -y
@@ -18,116 +50,213 @@ cargo install --git https://github.com/coral-xyz/anchor avm --locked
 avm install latest
 avm use latest
 
-echo "✅ Software installed"
+print_success "Software installed"
 
 # Setup wallet
 echo "🔑 Setting up wallet..."
 mkdir -p ~/.config/solana
 
 # Check if wallet already exists
-if [[ -f ~/.config/solana/id.json ]]; then
-    echo "✅ Found existing wallet"
-    export ANCHOR_WALLET=~/.config/solana/id.json
+readonly WALLET_PATH="$HOME/.config/solana/id.json"
+
+if [[ -f "$WALLET_PATH" ]]; then
+    print_success "Found existing wallet"
+    export ANCHOR_WALLET="$WALLET_PATH"
     WALLET=$(solana address)
-    echo "Using wallet: $WALLET"
+    print_info "Using wallet: $WALLET"
 else
-    echo "No wallet found. Choose option:"
+    print_info "No wallet found. Choose option:"
     echo "1 = Import your existing wallet (recommended)"
     echo "2 = Create new wallet"
     read -p "Enter 1 or 2: " wallet_choice
     
-    if [[ $wallet_choice == "1" ]]; then
-        echo "Importing your wallet..."
-        echo "When prompted, enter your seed phrase (12 or 24 words)"
-        solana-keygen recover --outfile ~/.config/solana/id.json
-        echo "✅ Wallet imported"
-    else
-        echo "Creating new wallet..."
-        solana-keygen new --outfile ~/.config/solana/id.json --no-bip39-passphrase
-        echo "✅ New wallet created"
-        echo "⚠️  SAVE YOUR SEED PHRASE! You'll need it to recover your wallet."
-    fi
+    case "$wallet_choice" in
+        1)
+            print_info "Importing your wallet..."
+            echo "When prompted, enter your seed phrase (12 or 24 words)"
+            solana-keygen recover --outfile "$WALLET_PATH" || {
+                print_error "Failed to import wallet"
+                exit 1
+            }
+            print_success "Wallet imported"
+            ;;
+        2)
+            print_info "Creating new wallet..."
+            solana-keygen new --outfile "$WALLET_PATH" --no-bip39-passphrase || {
+                print_error "Failed to create wallet"
+                exit 1
+            }
+            print_success "New wallet created"
+            print_warning "SAVE YOUR SEED PHRASE! You'll need it to recover your wallet."
+            ;;
+        *)
+            print_error "Invalid choice. Please enter 1 or 2."
+            exit 1
+            ;;
+    esac
     
-    export ANCHOR_WALLET=~/.config/solana/id.json
+    export ANCHOR_WALLET="$WALLET_PATH"
     WALLET=$(solana address)
-    echo "Using wallet: $WALLET"
+    print_info "Using wallet: $WALLET"
 fi
 
-# Choose network
+# Choose network with improved validation
+print_info "Choose deployment network:"
 echo "1 = Devnet (testing)"
 echo "2 = Mainnet (production)"
-read -p "Choose: " net
+read -p "Enter 1 or 2: " net
 
-if [[ $net == "1" ]]; then
-    solana config set --url https://api.devnet.solana.com
-    NETWORK="devnet"
-    echo "Using devnet"
-else
-    solana config set --url https://api.mainnet-beta.solana.com
-    NETWORK="mainnet"
-    echo "Using mainnet"
-fi
+case "$net" in
+    1)
+        readonly NETWORK="devnet"
+        readonly RPC_URL="https://api.devnet.solana.com"
+        print_info "Selected: Devnet (testing)"
+        ;;
+    2)
+        readonly NETWORK="mainnet"
+        readonly RPC_URL="https://api.mainnet-beta.solana.com"
+        print_warning "Selected: Mainnet (production)"
+        ;;
+    *)
+        print_error "Invalid choice. Please enter 1 or 2."
+        exit 1
+        ;;
+esac
 
-echo "Balance: $(solana balance)"
+# Configure network
+print_info "Configuring Solana CLI for $NETWORK..."
+solana config set --url "$RPC_URL" || {
+    print_error "Failed to configure Solana CLI"
+    exit 1
+}
 
-# Deploy
+# Check balance
+print_info "Checking wallet balance..."
+BALANCE=$(solana balance) || {
+    print_error "Failed to check balance. Is your wallet configured correctly?"
+    exit 1
+}
+print_info "Balance: $BALANCE"
+
+# Deploy - with improved path handling
 echo "📁 Checking project structure..."
-if [[ ! -d "solana-token" ]]; then
-    echo "❌ solana-token directory not found!"
-    echo "Make sure you're in the correct project directory"
-    echo "Current directory: $(pwd)"
-    echo "Contents: $(ls -la)"
+
+# Use command line argument, environment variable, or default
+readonly PROJECT_DIR="${1:-${PROJECT_DIR:-solana-token}}"
+
+# Robust directory validation
+if [[ ! -d "$PROJECT_DIR" ]]; then
+    print_error "Directory '$PROJECT_DIR' does not exist!"
+    print_info "Current directory: $(pwd)"
+    print_info "Available directories:"
+    ls -la | grep "^d" || echo "No directories found"
+    echo ""
+    print_info "💡 Solutions:"
+    echo "1. Make sure you're in the project root directory"
+    echo "2. Run: $SCRIPT_NAME /path/to/solana-token"
+    echo "3. Set PROJECT_DIR: export PROJECT_DIR=/path/to/solana-token"
+    echo "4. Clone repo: git clone https://github.com/DiamondzShadow/zTuB3-Diamondz-Contract.git"
     exit 1
 fi
 
-cd solana-token
-echo "✅ Found solana-token directory"
+# Safely change directory
+print_info "Entering directory: $PROJECT_DIR"
+cd "$PROJECT_DIR" || {
+    print_error "Failed to enter directory '$PROJECT_DIR'"
+    exit 1
+}
+
+# Verify we're in the right place
+if [[ ! -f "Anchor.toml" ]]; then
+    print_error "Not a valid Solana project directory (missing Anchor.toml)"
+    print_info "Current directory: $(pwd)"
+    print_info "Contents: $(ls -la)"
+    exit 1
+fi
+
+print_success "Verified Solana project directory"
 
 # Clean old builds
-echo "🧹 Cleaning old builds..."
+print_info "Cleaning old builds..."
 rm -rf target/ node_modules/ deployment-*.json || true
 
 # Install dependencies
-echo "📦 Installing dependencies..."
-yarn install
+print_info "Installing dependencies..."
+yarn install || {
+    print_error "Failed to install dependencies"
+    exit 1
+}
 
 # Configure and build
-echo "🔨 Building program..."
-anchor config set --provider.cluster $NETWORK
-anchor build
+print_info "Building program..."
+anchor config set --provider.cluster "$NETWORK" || {
+    print_error "Failed to configure Anchor"
+    exit 1
+}
+
+anchor build || {
+    print_error "Build failed"
+    exit 1
+}
 
 # Verify build
-if [[ ! -f "target/deploy/burn_mint_spl.so" ]]; then
-    echo "❌ Build failed - program binary not found"
+readonly PROGRAM_BINARY="target/deploy/burn_mint_spl.so"
+if [[ ! -f "$PROGRAM_BINARY" ]]; then
+    print_error "Build failed - program binary not found at $PROGRAM_BINARY"
     exit 1
 fi
 
-echo "✅ Build successful"
+print_success "Build successful"
 
 # Deploy program
-echo "🚀 Deploying program to $NETWORK..."
-anchor deploy
+print_info "Deploying program to $NETWORK..."
+anchor deploy || {
+    print_error "Program deployment failed"
+    exit 1
+}
 
-export SOLANA_NETWORK=$NETWORK
-if [[ $NETWORK == "devnet" ]]; then
-    yarn deploy:devnet
+# Deploy token
+print_info "Initializing $TOKEN_NAME token..."
+export SOLANA_NETWORK="$NETWORK"
+export RPC_URL="$RPC_URL"
+
+if [[ "$NETWORK" == "devnet" ]]; then
+    yarn deploy:devnet || {
+        print_error "Token deployment to devnet failed"
+        exit 1
+    }
 else
-    yarn deploy:mainnet
+    yarn deploy:mainnet || {
+        print_error "Token deployment to mainnet failed"
+        exit 1
+    }
 fi
 
 echo ""
-echo "🎉 SDM TOKEN DEPLOYED!"
-echo "Name: Diamondz Shadow Game + Movies"
-echo "Symbol: SDM"
+print_success "SDM TOKEN DEPLOYED SUCCESSFULLY!"
+print_info "Token Details:"
+echo "  Name: $TOKEN_NAME"
+echo "  Symbol: $TOKEN_SYMBOL"
+echo "  Network: $NETWORK"
 
-# Show mint address
-if [[ -f "deployment-$NETWORK.json" ]]; then
-    MINT=$(grep -o '"mint":"[^"]*"' deployment-$NETWORK.json | cut -d'"' -f4)
-    echo "Mint: $MINT"
-    
-    if [[ $NETWORK == "mainnet" ]]; then
-        echo "View: https://explorer.solana.com/address/$MINT"
+# Show mint address with improved parsing
+readonly DEPLOYMENT_FILE="deployment-$NETWORK.json"
+if [[ -f "$DEPLOYMENT_FILE" ]]; then
+    if command -v jq &> /dev/null; then
+        MINT=$(jq -r '.mint' "$DEPLOYMENT_FILE")
     else
-        echo "View: https://explorer.solana.com/address/$MINT?cluster=devnet"
+        MINT=$(grep -o '"mint":"[^"]*"' "$DEPLOYMENT_FILE" | cut -d'"' -f4)
     fi
+    
+    print_info "Mint Address: $MINT"
+    
+    if [[ "$NETWORK" == "mainnet" ]]; then
+        print_info "View on Explorer: https://explorer.solana.com/address/$MINT"
+    else
+        print_info "View on Explorer: https://explorer.solana.com/address/$MINT?cluster=devnet"
+    fi
+else
+    print_warning "Deployment file not found - check console output for mint address"
 fi
+
+print_success "Deployment complete! Your token shows as '$TOKEN_NAME' not 'SPL Token'"
