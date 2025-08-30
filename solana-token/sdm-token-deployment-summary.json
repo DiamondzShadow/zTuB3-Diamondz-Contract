@@ -1,0 +1,70 @@
+{
+  "currentStatus": {
+    "deployedToken": "CrqJ1HPrrDS8DDwWneBXGX5eqoxDF7NcYLDhFTCXVUsr",
+    "name": "Diamondz Shadow Game + Movies",
+    "symbol": "SDM",
+    "decimals": 9,
+    "network": "Solana Mainnet",
+    "ccipCompatible": true,
+    "displayIssue": "Shows as 'SPL Token' instead of proper name",
+    "reason": "No Metaplex metadata account created"
+  },
+  "solutions": {
+    "option1": {
+      "name": "Add Metaplex Metadata to Existing Token",
+      "cost": "~0.002 SOL",
+      "currentBalance": "0.004 SOL",
+      "status": "Possible but complex - Metaplex APIs are evolving",
+      "steps": [
+        "1. Get more SOL (~0.002 SOL needed)",
+        "2. Use updated Metaplex SDK to add metadata",
+        "3. Wait for explorer indexing"
+      ]
+    },
+    "option2": {
+      "name": "Deploy New TOKEN-2022 with Built-in Metadata",
+      "cost": "~0.01 SOL",
+      "currentBalance": "0.004 SOL",
+      "status": "Recommended - Modern approach",
+      "benefits": [
+        "Built-in metadata (no external accounts)",
+        "Shows name immediately",
+        "Still CCIP compatible",
+        "Future-proof TOKEN-2022 standard"
+      ],
+      "steps": [
+        "1. Get more SOL (~0.01 SOL needed)",
+        "2. Deploy new TOKEN-2022 with metadata",
+        "3. Use new mint address for CCIP"
+      ]
+    },
+    "option3": {
+      "name": "Use Current Token for CCIP (No Name Fix)",
+      "cost": "0 SOL",
+      "status": "Works for CCIP but poor UX",
+      "pros": [
+        "Ready for CCIP integration now"
+      ],
+      "cons": [
+        "Shows as 'SPL Token' on explorers",
+        "Poor user experience"
+      ]
+    }
+  },
+  "recommendation": {
+    "action": "Deploy new TOKEN-2022 with metadata",
+    "reason": "Best user experience and future compatibility",
+    "cost": "~0.01 SOL (~$2-3 USD)",
+    "result": "Token shows 'Diamondz Shadow Game + Movies' immediately"
+  },
+  "ccipIntegration": {
+    "note": "Both tokens (current and new TOKEN-2022) are CCIP compatible",
+    "nextSteps": [
+      "1. Choose which token to use",
+      "2. Register with Chainlink CCIP router",
+      "3. Configure burn/mint authorities",
+      "4. Set up rate limits",
+      "5. Test cross-chain bridging"
+    ]
+  }
+}

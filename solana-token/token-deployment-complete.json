@@ -1,0 +1,20 @@
+{
+  "mint": "CrqJ1HPrrDS8DDwWneBXGX5eqoxDF7NcYLDhFTCXVUsr",
+  "name": "Diamondz Shadow Game + Movies",
+  "symbol": "SDM",
+  "decimals": 9,
+  "network": "mainnet-beta",
+  "deployer": "AhBwuxRn6ruvwoKMMwH9fTr8yMNbWSXpJuYTDoAjhsWx",
+  "ccipCompatible": true,
+  "displayIssue": {
+    "problem": "Token shows as 'SPL Token' instead of proper name",
+    "reason": "Metadata not properly set or indexed",
+    "solution": "Need to add Metaplex metadata account"
+  },
+  "ccipNextSteps": [
+    "1. Register token with Chainlink CCIP router",
+    "2. Set up burn/mint authorities",
+    "3. Configure rate limits",
+    "4. Test bridging with EVM token"
+  ]
+}

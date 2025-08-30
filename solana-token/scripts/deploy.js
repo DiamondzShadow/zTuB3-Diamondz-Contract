@@ -4,16 +4,16 @@ const { TOKEN_PROGRAM_ID, createMint, getOrCreateAssociatedTokenAccount, mintTo 
 const fs = require('fs');
 
 // Configuration
-const NETWORK = process.env.SOLANA_NETWORK || 'devnet';
-const RPC_URL = process.env.RPC_URL || 'https://api.devnet.solana.com';
+const NETWORK = process.env.SOLANA_NETWORK || 'mainnet-beta';
+const RPC_URL = process.env.RPC_URL || 'https://api.mainnet-beta.solana.com';
 
 // Token configuration - mirroring EVM version
 const TOKEN_CONFIG = {
-  name: "BurnMintSPL Token",
-  symbol: "BMTK",
-  decimals: 18,
-  initialSupply: "4000000000000000000000000000", // 4 billion tokens with 18 decimals
-  maxSupply: "5000000000000000000000000000", // 5 billion tokens with 18 decimals
+  name: "Diamondz Shadow Game + Movies",
+  symbol: "SDM",
+  decimals: 9,
+  initialSupply: "4000000000000000000", // 4 billion tokens with 9 decimals (4B * 10^9)
+  maxSupply: "5000000000000000000", // 5 billion tokens with 9 decimals (5B * 10^9)
 };
 
 async function deploy() {

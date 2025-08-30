@@ -182,7 +182,7 @@ const { BurnMintSPLClient } = require('./scripts/interact');
 const client = new BurnMintSPLClient(connection, wallet, programId);
 
 // Mint tokens to a recipient
-await client.mintTokens(recipientPubkey, '1000000000000000000000'); // 1000 tokens
+await client.mintTokens(recipientPubkey, '1000000000000'); // 1000 tokens with 9 decimals
 
 // Mint with CCIP metadata (for cross-chain tracking)
 await client.mintTokensWithCCIP(
@@ -193,7 +193,7 @@ await client.mintTokensWithCCIP(
 );
 
 // Burn tokens
-await client.burnTokens('100000000000000000000'); // 100 tokens
+await client.burnTokens('100000000000'); // 100 tokens with 9 decimals
 
 // Grant/revoke roles
 await client.grantMintRole(newMinterPubkey);
