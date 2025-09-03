@@ -10,8 +10,10 @@ out/
 # Docs
 docs/
 
-# Dotenv file
+# Environment files (contains sensitive API keys)
 .env
+.env.local
+.env.*.local
 
 # Coverage
 lcov.info

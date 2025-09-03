@@ -1,0 +1,23 @@
+{
+  "name": "diamondz-shadow-metadata-umi",
+  "version": "1.0.0",
+  "description": "SDM Token metadata management using Metaplex UMI framework",
+  "main": "attach_metadata_umi.ts",
+  "scripts": {
+    "attach-metadata": "npx ts-node attach_metadata_umi.ts",
+    "install-deps": "npm install @metaplex-foundation/umi-bundle-defaults @metaplex-foundation/mpl-token-metadata @metaplex-foundation/umi typescript ts-node @types/node",
+    "audit-fix": "npm audit fix"
+  },
+  "dependencies": {
+    "@metaplex-foundation/umi-bundle-defaults": "^0.9.2",
+    "@metaplex-foundation/mpl-token-metadata": "^3.2.1", 
+    "@metaplex-foundation/umi": "^0.9.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.5",
+    "typescript": "^5.3.3",
+    "ts-node": "^10.9.2"
+  },
+  "author": "Diamondz Shadow Team",
+  "license": "MIT"
+}
