@@ -1,0 +1,33 @@
+{
+  "name": "Diamondz Shadow Game + Movies",
+  "symbol": "SDM",
+  "description": "The official utility token of the Diamondz Shadow Game + Movies ecosystem.",
+  "image": "https://red-adorable-dove-755.mypinata.cloud/ipfs/bafybeibmolmgkb2vmyt675rsentmu5f2djzq3ctl4dorubq4bvdwds3g7a",
+  "attributes": [
+    { "trait_type": "Category", "value": "Entertainment" },
+    { "trait_type": "Utility", "value": "Gaming + Movies" }
+  ],
+  "properties": {
+    "files": [
+      {
+        "uri": "https://red-adorable-dove-755.mypinata.cloud/ipfs/bafybeibmolmgkb2vmyt675rsentmu5f2djzq3ctl4dorubq4bvdwds3g7a",
+        "type": "image/png"
+      }
+    ],
+    "category": "image",
+    "creators": [
+      {
+        "address": "GJyTrgEFidh4ByAfL93WLh7PFpWDDA8M4XJ4ewAGznJo",
+        "share": 100
+      }
+    ]
+  },
+  "extensions": {
+    "website": "https://diamondzshadow.net",
+    "twitter": "https://twitter.com/diamondzshadom",
+    "youtube": "https://www.youtube.com/@DiamondzChain",
+    "telegram": "https://t.me/diamondzshadow",
+    "discord": "https://discord.gg/jeJfn266Rk",
+    "linkedin": "https://www.linkedin.com/company/diamondzshadom/"
+  }
+}
