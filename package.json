@@ -1,0 +1,40 @@
+{
+  "name": "diamondz-shadow-token-metadata",
+  "version": "1.0.0",
+  "description": "Metadata management and IPFS upload tools for Diamondz Shadow Game + Movies (SDM) token",
+  "main": "index.js",
+  "scripts": {
+    "upload-metadata": "bash scripts/upload_metadata_to_pinata.sh metadata.json",
+    "attach-metadata": "npx ts-node scripts/attach_metadata.ts",
+    "validate-json": "cat metadata.json | jq .",
+    "test-metadata": "curl -s https://red-adorable-dove-755.mypinata.cloud/ipfs/bafkreigb2axwu5qxqq5ytl5625murmjcpget5nqwxtcd3jc62m4nibk7f4 | jq .",
+    "setup": "cp .env.example .env && echo 'Please edit .env with your credentials'"
+  },
+  "keywords": [
+    "solana",
+    "token",
+    "metadata",
+    "ipfs",
+    "pinata",
+    "metaplex",
+    "diamondz-shadow"
+  ],
+  "author": "Diamondz Shadow Team",
+  "license": "MIT",
+  "dependencies": {
+    "@metaplex-foundation/js": "^0.20.1",
+    "@solana/web3.js": "^1.87.6",
+    "bs58": "^5.0.0",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.5",
+    "typescript": "^5.3.3",
+    "ts-node": "^10.9.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-org/diamondz-shadow-token"
+  },
+  "homepage": "https://diamondzshadow.net"
+}
