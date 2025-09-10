@@ -17,7 +17,7 @@ ARBITRUM_BACKUP_RPC = "https://arbitrum-mainnet.infura.io/v3/YOUR_INFURA_KEY"
 
 # Arbiscan API (for contract verification status)
 ARBISCAN_API = "https://api.arbiscan.io/api"
-ARBISCAN_API_KEY = "YOUR_ARBISCAN_API_KEY"  # Optional, but recommended for higher rate limits
+ARBISCAN_API_KEY = "IGMMW2DMUS3QIEMIXHA42Q9IZP47X5M8PU"
 
 # Token contract address
 TOKEN_ADDRESS = "0x602b869eEf1C9F0487F31776bad8Af3C4A173394"
