@@ -60,7 +60,7 @@ def verify_contract(source_code):
         "contractname": "BurnMintERC677",
         "compilerversion": "v0.8.19+commit.7dd6d404",
         "optimizationUsed": "1",
-        "runs": "200",
+        "runs": "10000",
         "constructorArguements": constructor_args,  # Note: Arbiscan uses this spelling
         "evmversion": "paris",  # Default for 0.8.19
         "licenseType": "3",  # MIT
