@@ -1,0 +1,22 @@
+{
+  "contract_address": "0x602b869eEf1C9F0487F31776bad8Af3C4A173394",
+  "creation_tx": "0x1061de9e96b65cc62fabc748d972fefcf7cfc7fc9c518464855ac9744ef7d85d",
+  "arbiscan_api_key": "IGMMW2DMUS3QIEMIXHA42Q9IZP47X5M8PU",
+  "verification_url": "https://arbiscan.io/verifyContract?a=0x602b869eEf1C9F0487F31776bad8Af3C4A173394",
+  "token_info": {
+    "name": "Diamondz Shadow Game + Movies",
+    "symbol": "SDM",
+    "decimals": 18,
+    "total_supply": "4000000000"
+  },
+  "recommended_settings": {
+    "compiler_versions": [
+      "v0.8.20+commit.a1b79de6",
+      "v0.8.19+commit.7dd6d404",
+      "v0.8.18+commit.87f61d96"
+    ],
+    "optimization": true,
+    "runs": 200,
+    "evm_version": "default"
+  }
+}
