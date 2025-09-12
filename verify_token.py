@@ -5,19 +5,30 @@ Token Address: 0x602b869eEf1C9F0487F31776bad8Af3C4A173394
 Mint Transaction: 0x1061de9e96b65cc62fabc748d972fefcf7cfc7fc9c518464855ac9744ef7d85d
 """
 
+import os
 import json
 import requests
 from web3 import Web3
 from datetime import datetime
 from typing import Dict, Any, Optional
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 # Arbitrum RPC endpoints
 ARBITRUM_RPC = "https://arb1.arbitrum.io/rpc"
-ARBITRUM_BACKUP_RPC = "https://arbitrum-mainnet.infura.io/v3/YOUR_INFURA_KEY"
+INFURA_API_KEY = os.getenv('INFURA_API_KEY', '')
+ARBITRUM_BACKUP_RPC = f"https://arbitrum-mainnet.infura.io/v3/{INFURA_API_KEY}" if INFURA_API_KEY else ARBITRUM_RPC
 
 # Arbiscan API (for contract verification status)
 ARBISCAN_API = "https://api.arbiscan.io/api"
-ARBISCAN_API_KEY = "IGMMW2DMUS3QIEMIXHA42Q9IZP47X5M8PU"
+ARBISCAN_API_KEY = os.getenv('ARBISCAN_API_KEY')
+
+if not ARBISCAN_API_KEY:
+    print("⚠️  Warning: ARBISCAN_API_KEY not found in environment variables.")
+    print("   Please set it in your .env file or as an environment variable.")
+    print("   Copy .env.example to .env and add your API key.")
 
 # Token contract address
 TOKEN_ADDRESS = "0x602b869eEf1C9F0487F31776bad8Af3C4A173394"
@@ -93,7 +104,7 @@ class TokenVerifier:
     def __init__(self, rpc_url: str = ARBITRUM_RPC):
         """Initialize the token verifier with Web3 connection."""
         self.w3 = Web3(Web3.HTTPProvider(rpc_url))
-        if not self.w3.is_connected():
+        if not self.w3.is_connected() and ARBITRUM_BACKUP_RPC != ARBITRUM_RPC:
             print(f"Failed to connect to {rpc_url}, trying backup...")
             self.w3 = Web3(Web3.HTTPProvider(ARBITRUM_BACKUP_RPC))
         
@@ -314,6 +325,10 @@ class TokenVerifier:
             "optimization": None
         }
         
+        if not ARBISCAN_API_KEY:
+            print("⚠️  Cannot check verification status without ARBISCAN_API_KEY")
+            return result
+            
         try:
             # Query Arbiscan API
             params = {
