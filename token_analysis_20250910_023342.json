@@ -1,0 +1,13 @@
+{
+  "timestamp": "2025-09-10T02:33:42.145980",
+  "token_address": "0x602b869eEf1C9F0487F31776bad8Af3C4A173394",
+  "holders_count": 0,
+  "recent_transfers": 2,
+  "security_analysis": {
+    "verified_contract": false,
+    "has_liquidity": "Unknown",
+    "holder_concentration": "Unknown",
+    "active_trading": "Unknown",
+    "owner_renounced": false
+  }
+}

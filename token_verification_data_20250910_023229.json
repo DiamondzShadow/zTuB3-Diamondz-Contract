@@ -1,0 +1,81 @@
+{
+  "timestamp": "2025-09-10T02:32:29.759850",
+  "network": "Arbitrum",
+  "token_address": "0x602b869eEf1C9F0487F31776bad8Af3C4A173394",
+  "mint_tx_hash": "0x1061de9e96b65cc62fabc748d972fefcf7cfc7fc9c518464855ac9744ef7d85d",
+  "token_verification": {
+    "address": "0x602b869eEf1C9F0487F31776bad8Af3C4A173394",
+    "is_contract": true,
+    "contract_info": {
+      "code_size": 7633
+    },
+    "token_info": {
+      "name": "Diamondz Shadow Game + Movies",
+      "symbol": "SDM",
+      "decimals": 18,
+      "total_supply_raw": 4000000000000000000000000000,
+      "total_supply": 4000000000.0,
+      "owner": "0xC5D133296E17BA25DF0409a6C31607bf3B78e3e3"
+    },
+    "security_checks": {},
+    "warnings": []
+  },
+  "transaction_analysis": {
+    "tx_hash": "0x1061de9e96b65cc62fabc748d972fefcf7cfc7fc9c518464855ac9744ef7d85d",
+    "found": true,
+    "details": {
+      "block_number": 362698455,
+      "from": "0xC5D133296E17BA25DF0409a6C31607bf3B78e3e3",
+      "to": null,
+      "contract_address": "0x602b869eEf1C9F0487F31776bad8Af3C4A173394",
+      "status": "Success",
+      "gas_used": 2070479,
+      "effective_gas_price": 10000000,
+      "transaction_index": 5,
+      "logs_count": 3,
+      "gas_cost_eth": "0.00002070479",
+      "timestamp": "2025-07-29 05:26:31 UTC",
+      "is_creation_tx": true
+    },
+    "logs": [
+      {
+        "index": 0,
+        "address": "0x602b869eEf1C9F0487F31776bad8Af3C4A173394",
+        "topics": [
+          "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0",
+          "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "0x000000000000000000000000c5d133296e17ba25df0409a6c31607bf3b78e3e3"
+        ],
+        "data": "b''"
+      },
+      {
+        "index": 1,
+        "address": "0x602b869eEf1C9F0487F31776bad8Af3C4A173394",
+        "topics": [
+          "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+          "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "0x00000000000000000000000018b2b2ce7d05bfe0883ff874ba0c536a89d07363"
+        ],
+        "data": "b'\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x0c\\xec\\xb8\\xf2\\x7fB\\x00\\xf3\\xa0\\x00\\x00\\x00'",
+        "event_type": "MINT"
+      },
+      {
+        "index": 2,
+        "address": "0x602b869eEf1C9F0487F31776bad8Af3C4A173394",
+        "topics": [
+          "0x68bdb952732439160113c0e57c44584be6ae651b5df934f5a995370572590d57",
+          "0x000000000000000000000000602b869eef1c9f0487f31776bad8af3c4a173394",
+          "0x00000000000000000000000018b2b2ce7d05bfe0883ff874ba0c536a89d07363"
+        ],
+        "data": "b'\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x0c\\xec\\xb8\\xf2\\x7fB\\x00\\xf3\\xa0\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x0c\\xec\\xb8\\xf2\\x7fB\\x00\\xf3\\xa0\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00h\\x88[\\x87'"
+      }
+    ],
+    "warnings": []
+  },
+  "contract_verification": {
+    "verified": false,
+    "source_code": null,
+    "compiler_version": null,
+    "optimization": null
+  }
+}

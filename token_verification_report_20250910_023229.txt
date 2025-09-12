@@ -1,0 +1,46 @@
+
+======================================================================
+                    TOKEN VERIFICATION REPORT
+======================================================================
+Generated: 2025-09-10 02:32:29 UTC
+Network: Arbitrum (Chain ID: 42161)
+
+📋 TOKEN CONTRACT SUMMARY
+----------------------------------------
+Address: 0x602b869eEf1C9F0487F31776bad8Af3C4A173394
+Is Contract: ✅ Yes
+Name: Diamondz Shadow Game + Movies
+Symbol: SDM
+Decimals: 18
+Total Supply: 4,000,000,000.00 SDM
+Owner: 0xC5D133296E17BA25DF0409a6C31607bf3B78e3e3
+
+🔐 VERIFICATION STATUS
+----------------------------------------
+⚠️  Contract is NOT verified on Arbiscan
+   Recommendation: Request contract verification from the team
+
+💰 MINT TRANSACTION ANALYSIS
+----------------------------------------
+Transaction Hash: 0x1061de9e96b65cc62fabc748d972fefcf7cfc7fc9c518464855ac9744ef7d85d
+Status: Success
+Block: 362698455
+Timestamp: 2025-07-29 05:26:31 UTC
+From: 0xC5D133296E17BA25DF0409a6C31607bf3B78e3e3
+To: None
+✅ This transaction CREATED the token contract
+✅ Mint event detected in transaction
+
+🛡️  SECURITY RECOMMENDATIONS
+----------------------------------------
+• Contract is not verified - higher risk
+
+📌 ADDITIONAL CHECKS RECOMMENDED:
+• Verify the project's official website and documentation
+• Check liquidity and trading volume on DEXs
+• Review holder distribution on Arbiscan
+• Look for audit reports if available
+• Check social media and community sentiment
+• Use tools like Token Sniffer for automated security checks
+
+======================================================================
