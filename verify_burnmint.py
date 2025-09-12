@@ -8,11 +8,21 @@ import requests
 import time
 import subprocess
 import os
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 # Configuration
 ARBISCAN_API = "https://api.arbiscan.io/api"
-ARBISCAN_API_KEY = "IGMMW2DMUS3QIEMIXHA42Q9IZP47X5M8PU"
+ARBISCAN_API_KEY = os.getenv('ARBISCAN_API_KEY')
 TOKEN_ADDRESS = "0x602b869eEf1C9F0487F31776bad8Af3C4A173394"
+
+if not ARBISCAN_API_KEY:
+    print("⚠️  Error: ARBISCAN_API_KEY not found in environment variables.")
+    print("   Please set it in your .env file or as an environment variable.")
+    print("   Copy .env.example to .env and add your API key.")
+    exit(1)
 
 def flatten_contract():
     """Flatten the BurnMintERC677 contract."""

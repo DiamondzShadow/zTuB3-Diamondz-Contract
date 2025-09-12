@@ -1,7 +1,6 @@
 {
   "contract_address": "0x602b869eEf1C9F0487F31776bad8Af3C4A173394",
   "creation_tx": "0x1061de9e96b65cc62fabc748d972fefcf7cfc7fc9c518464855ac9744ef7d85d",
-  "arbiscan_api_key": "IGMMW2DMUS3QIEMIXHA42Q9IZP47X5M8PU",
   "verification_url": "https://arbiscan.io/verifyContract?a=0x602b869eEf1C9F0487F31776bad8Af3C4A173394",
   "token_info": {
     "name": "Diamondz Shadow Game + Movies",

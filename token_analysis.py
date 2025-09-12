@@ -3,17 +3,27 @@
 Additional Token Analysis for SDM Token on Arbitrum
 """
 
+import os
 import json
 import requests
 from web3 import Web3
 from datetime import datetime
 import time
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 # Configuration
 ARBITRUM_RPC = "https://arb1.arbitrum.io/rpc"
 ARBISCAN_API = "https://api.arbiscan.io/api"
-ARBISCAN_API_KEY = "IGMMW2DMUS3QIEMIXHA42Q9IZP47X5M8PU"
+ARBISCAN_API_KEY = os.getenv('ARBISCAN_API_KEY')
 TOKEN_ADDRESS = "0x602b869eEf1C9F0487F31776bad8Af3C4A173394"
+
+if not ARBISCAN_API_KEY:
+    print("⚠️  Warning: ARBISCAN_API_KEY not found in environment variables.")
+    print("   Some features will be limited without an API key.")
+    print("   Copy .env.example to .env and add your API key.")
 
 # Initialize Web3
 w3 = Web3(Web3.HTTPProvider(ARBITRUM_RPC))

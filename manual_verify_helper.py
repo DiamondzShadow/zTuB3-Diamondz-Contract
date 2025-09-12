@@ -4,15 +4,20 @@ Manual Verification Helper for Arbiscan
 This script prepares all the information you need for manual verification
 """
 
+import os
 import json
 import requests
 from web3 import Web3
 from datetime import datetime
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 # Configuration
 TOKEN_ADDRESS = "0x602b869eEf1C9F0487F31776bad8Af3C4A173394"
 CREATION_TX = "0x1061de9e96b65cc62fabc748d972fefcf7cfc7fc9c518464855ac9744ef7d85d"
-ARBISCAN_API_KEY = "IGMMW2DMUS3QIEMIXHA42Q9IZP47X5M8PU"
+ARBISCAN_API_KEY = os.getenv('ARBISCAN_API_KEY', 'YOUR_API_KEY_HERE')
 
 def generate_verification_info():
     """Generate all information needed for manual verification."""
